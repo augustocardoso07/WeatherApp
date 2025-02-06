@@ -32,7 +32,13 @@ export const WeatherScreen = () => {
         onSubmitEditing={() => setCity(city.trim())}
       />
 
-      {isLoading && <ActivityIndicator size="large" style={styles.loader} />}
+      {isLoading && (
+        <ActivityIndicator
+          size="large"
+          style={styles.loader}
+          testID="loading-indicator"
+        />
+      )}
 
       {error && <Text style={styles.error}>{error.message}</Text>}
 
