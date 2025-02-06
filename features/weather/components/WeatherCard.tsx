@@ -1,17 +1,47 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { WeatherData } from "../types/weather.types";
+import { Ionicons } from "@expo/vector-icons";
+import { useFavorites } from "../../favorites/context/FavoritesContext";
 
 interface WeatherCardProps {
   weather: WeatherData;
 }
 
 export const WeatherCard = ({ weather }: WeatherCardProps) => {
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const cityName = weather.location.name;
+  const isCityFavorite = isFavorite(cityName);
+
+  const toggleFavorite = async () => {
+    if (isCityFavorite) {
+      await removeFavorite(cityName);
+    } else {
+      await addFavorite({
+        name: cityName,
+        country: weather.location.country,
+      });
+    }
+  };
+
   return (
     <View style={styles.weatherContainer}>
-      <Text style={styles.location}>
-        {weather.location.name}, {weather.location.country}
-      </Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.location}>
+          {cityName}, {weather.location.country}
+        </Text>
+        <TouchableOpacity
+          onPress={toggleFavorite}
+          style={styles.favoriteButton}
+          testID="toggle-favorite"
+        >
+          <Ionicons
+            name={isCityFavorite ? "heart" : "heart-outline"}
+            size={24}
+            color={isCityFavorite ? "#ff4444" : "#666"}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.currentWeather}>
         <Image
@@ -37,11 +67,19 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
   location: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 15,
+    flex: 1,
+  },
+  favoriteButton: {
+    padding: 8,
   },
   currentWeather: {
     alignItems: "center",

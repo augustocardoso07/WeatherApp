@@ -7,6 +7,7 @@ A simple weather application built with React Native and TypeScript that display
 - Search weather by city name
 - Display current weather conditions
 - Show 5-hour forecast
+- Save favorite cities
 - Error handling
 
 ## Prerequisites
@@ -57,23 +58,44 @@ npm test
 ```
 features/
   weather/
-    components/     # React components
-    hooks/         # Custom hooks
-    services/      # API services
+    components/     # React components for weather display
+    hooks/         # Custom hooks for weather data
+    services/      # API services for weather
     tests/         # Test files
     types/         # TypeScript types
+  favorites/
+    components/    # React components for favorites
+    context/      # Favorites context and provider
 app/
-  (tabs)/          # Navigation and screens
+  (tabs)/         # Navigation and screens
 ```
 
 ## Technologies Used
 
 - React Native
 - TypeScript
+- Expo Router (for navigation)
 - Expo
 - TanStack Query
 - WeatherAPI
+- AsyncStorage (for favorites persistence)
 - Jest & Testing Library
+
+## Features in Detail
+
+### Weather Search
+
+- Real-time weather data fetching
+- Current temperature, conditions, and location display
+- 5-hour weather forecast
+
+### Favorites System
+
+- Add cities to favorites with a single tap
+- Remove cities from favorites list
+- Persistent storage using AsyncStorage
+- Quick navigation to weather details from favorites
+- Empty state handling with helpful messages
 
 ## License
 

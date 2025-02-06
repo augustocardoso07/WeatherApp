@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   TextInput,
@@ -9,10 +9,18 @@ import {
 import { useDebouncedWeather } from "../hooks/useWeather";
 import { WeatherCard } from "./WeatherCard";
 import { WeatherForecast } from "./WeatherForecast";
+import { useLocalSearchParams } from "expo-router";
 
 export const WeatherScreen = () => {
-  const [city, setCity] = useState("");
+  const { city: cityParam } = useLocalSearchParams<{ city?: string }>();
+  const [city, setCity] = useState(cityParam || "");
   const { data: weather, isLoading, error } = useDebouncedWeather(city);
+
+  useEffect(() => {
+    if (cityParam) {
+      setCity(decodeURIComponent(cityParam));
+    }
+  }, [cityParam]);
 
   return (
     <ScrollView style={styles.container}>
